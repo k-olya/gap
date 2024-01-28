@@ -17,15 +17,16 @@ describe("gap", () => {
   //     expect(greeting).toBe("Hello, world!");
   //   });
   test("executes shell commands", () => {
-    const result = $("echo hello");
+    const result = $`echo ${"hello"}`;
     expect(result).toBe("hello\n");
   });
   test("lists files in test directory", () => {
-    const result = $("ls .");
-    expect(result).toBe("index.test.js\n");
+    const result = $`ls -1 src/`;
+    const ls = ["index.js", "index.test.js"];
+    expect(result).toBe(ls.join("\n") + "\n");
   });
   test("prevents command injection", () => {
-    const result = $(`echo '${'hello; echo "goodbye"'}'`);
+    const result = $`echo '${'hello; echo "goodbye"'}'`;
     expect(result.stdout).toBe("hello\n");
     expect(result.stderr).toBeNull();
     expect(result.exitCode).toBe(0);
